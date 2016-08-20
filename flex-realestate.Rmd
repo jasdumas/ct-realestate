@@ -1,0 +1,123 @@
+---
+title: "Connecticut Real Estate Sales from 2011-2013"
+output: 
+  flexdashboard::flex_dashboard:
+    source_code: embed
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(flexdashboard)
+library(RSocrata)
+library(DT)
+library(ggplot2)
+library(plotly)
+library(dplyr)
+```
+
+
+Dashboard
+========================================
+
+
+```{r, initial_data, include=FALSE}
+url = "https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg"
+real_estate <- read.socrata(url)
+
+# get some small results for dashboard boxes
+tbl = as.data.frame(table(real_estate$Name))
+
+tbl$Freq <- as.numeric(tbl$Freq)
+
+mx <- as.character(tbl$Var1[which(tbl$Freq == max(tbl$Freq))])
+
+```
+
+
+Row
+-----------------------------------------------------------------------
+
+### Number of Sold Properties
+
+```{r, vb1}
+nums <- nrow(real_estate)
+valueBox(nums, icon = "fa-home")
+```
+
+
+### Median of Sale Price
+```{r, vb2}
+med <- median(real_estate$SalePrice)
+valueBox(med, icon = "fa-usd")
+```
+
+
+### Town with Most Sold Properties
+```{r, vb3}
+valueBox(mx, icon = "fa-road")
+
+```
+
+
+Analysis {.storyboard}
+=========================================
+
+### **Getting the data**: Exploring open government data and developing a model to predict **sales price** based on the assesed price and name of the town using historical records from the [data.ct.gov](data.ct.gov) open data portal.
+
+```{r, dt, echo=FALSE}
+
+head(real_estate, n=10)
+```
+
+
+### **Data Cleaning & Wrangling**: The original data included punctuation for the sale and assesed price.
+
+```{r, wrangle}
+
+# pre-processing - remove $ punctuation
+real_estate$AssessedValue <- gsub("^[[:punct:]]", "", real_estate$AssessedValue)
+real_estate$SalePrice <- gsub("^[[:punct:]]", "", real_estate$SalePrice)
+# change columns AssessedValue and SalePrice from chr to numeric
+real_estate$AssessedValue2 <- as.numeric(real_estate$AssessedValue)
+real_estate$SalePrice2 <- as.numeric(real_estate$SalePrice)
+# summary numbers of reponse
+summary(real_estate$SalePrice2)
+# correlations
+cor(real_estate$SalePrice2, real_estate$AssessedValue2) # moderate-high value
+
+```
+
+### **Exploratory Data Analysis**: Discovering correlations between independent and dependent variables through graphic representation.
+
+```{r, eda, echo=FALSE}
+# scatterplot 
+b_real_estate <- real_estate[, - 3] # create background data for plot
+
+s <- ggplot(real_estate, aes(x = AssessedValue2, y = SalePrice2, fill=factor(ListYear))) + 
+            geom_point(data=b_real_estate, fill = "grey", alpha=0.3) +
+            geom_point() +
+            facet_wrap(~ ListYear) +
+            theme_bw() +
+            labs(title = "Real Estate Prices by Listing Year", 
+                 x = "Assesed Value ($)", y = "Sale Price ($)") +
+            guides(fill = FALSE)
+
+ggplotly(s)
+
+```
+
+
+### Feature Engineering
+
+
+### Modeling
+
+
+Details
+=========================================
+
+*Summary of Data Source:* The Office of Policy and Management maintains a listing of all real estate sales with a sales price of $2,000 or greater that occur between October 1 and September 30 of each year. For each sale record, the file includes: town, property address, date of sale, property type (residential, apartment, commercial, industrial or vacant land), sales price, and property assessment.
+
+**Source**: [https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg](https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg)
+

@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"Connecticut Real Estate Sales from 2011-2013\"\noutput: \n  flexdashboard::flex_dashboard:\n    source_code: embed\n    theme: cosmo\n---\n\n```{r setup, include=FALSE}\nknitr::opts_chunk$set(warning = FALSE, message = FALSE)\nlibrary(flexdashboard)\nlibrary(RSocrata)\nlibrary(DT)\nlibrary(ggplot2)\nlibrary(plotly)\nlibrary(dplyr)\n```\n\n\nDashboard\n========================================\n\n\n```{r, initial_data, include=FALSE}\nurl = \"https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg\"\nreal_estate <- read.socrata(url)\n\n# get some small results for dashboard boxes\ntbl = as.data.frame(table(real_estate$Name))\n\ntbl$Freq <- as.numeric(tbl$Freq)\n\nmx <- as.character(tbl$Var1[which(tbl$Freq == max(tbl$Freq))])\n\n```\n\n\n\n\n\n\nRow\n-----------------------------------------------------------------------\n\n### Number of Sold Properties\n\n```{r, vb1}\nnums <- nrow(real_estate)\nvalueBox(nums, icon = \"fa-home\")\n```\n\n\n### Median of Sale Price\n```{r, vb2}\nmed <- median(real_estate$SalePrice)\nvalueBox(med, icon = \"fa-usd\")\n```\n\n\n### Town with Most Sold Properties\n```{r, vb3}\nvalueBox(mx, icon = \"fa-road\")\n\n```\n\n\nAnalysis {.storyboard}\n=========================================\n\n### **Getting the data**: Exploring open government data and developing a model to predict **sales price** based on the assesed price and name of the town using historical records from the [data.ct.gov](data.ct.gov) open data portal.\n\n```{r, dt, echo=FALSE}\n\nhead(real_estate, n=10)\n```\n\n\n### **Data Cleaning & Wrangling**: The original data included punctuation for the sale and assesed price.\n\n```{r, wrangle}\n\n# pre-processing - remove $ punctuation\nreal_estate$AssessedValue <- gsub(\"^[[:punct:]]\", \"\", real_estate$AssessedValue)\nreal_estate$SalePrice <- gsub(\"^[[:punct:]]\", \"\", real_estate$SalePrice)\n# change columns AssessedValue and SalePrice from chr to numeric\nreal_estate$AssessedValue2 <- as.numeric(real_estate$AssessedValue)\nreal_estate$SalePrice2 <- as.numeric(real_estate$SalePrice)\n# summary numbers of reponse\nsummary(real_estate$SalePrice2)\n# correlations\ncor(real_estate$SalePrice2, real_estate$AssessedValue2) # moderate-high value\n\n```\n\n### **Exploratory Data Analysis**: Discovering correlations between independent and dependent variables through graphic representation.\n\n```{r, eda, echo=FALSE}\n# scatterplot \nb_real_estate <- real_estate[, - 3] # create background data for plot\n\ns <- ggplot(real_estate, aes(x = AssessedValue2, y = SalePrice2, fill=factor(ListYear))) + \n            geom_point(data=b_real_estate, fill = \"grey\", alpha=0.3) +\n            geom_point() +\n            facet_wrap(~ ListYear) +\n            theme_bw() +\n            labs(title = \"Real Estate Prices by Listing Year\", \n                 x = \"Assesed Value ($)\", y = \"Sale Price ($)\") +\n            guides(fill = FALSE)\n\nggplotly(s)\n\n```\n\n\n### Feature Engineering\n\n\n### Modeling\n\n\nDetails\n=========================================\n\n*Summary of Data Source:* The Office of Policy and Management maintains a listing of all real estate sales with a sales price of $2,000 or greater that occur between October 1 and September 30 of each year. For each sale record, the file includes: town, property address, date of sale, property type (residential, apartment, commercial, industrial or vacant land), sales price, and property assessment.\n\n**Source**: [https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg](https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg)\n\n",
+    "created" : 1471126065245.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3477410368",
+    "id" : "4A79A60D",
+    "lastKnownWriteTime" : 1471705350,
+    "last_content_update" : 1471705742340,
+    "path" : "~/Desktop/R-directory/ct-realestate/flex-realestate.Rmd",
+    "project_path" : "flex-realestate.Rmd",
+    "properties" : {
+        "chunk_rendered_width" : "650",
+        "last_setup_crc32" : "DDB83C33ef6dee8f",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

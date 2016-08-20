@@ -1,0 +1,6 @@
+"0","m <- ggplot(real_estate, aes(x = county, fill = factor(county))) +"
+"0","      geom_bar() +"
+"0","      theme_bw() +"
+"0","      labs(title = ""Towns with Most Real Estate Sales"", "
+"0","           y = """", x = """")"
+"0","ggplotly(m)"

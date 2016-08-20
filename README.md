@@ -1,4 +1,4 @@
-# CT Real Estate Sales from 2011-2013
+# Connecticut Real Estate Sales from 2011-2013
 
 Exploring open government data and developing a model to predict **sales price** based on the assesed price and name of the town using historical records from the [data.ct.gov](data.ct.gov) open data portal.
 
@@ -10,6 +10,6 @@ The Office of Policy and Management in Connecticut maintains a listing of all re
 
 [https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg](https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg)
 
-## Contct me
+## Contact me
 
 Jasmine Dumas | [@jasdumas](https://twitter.com/jasdumas)

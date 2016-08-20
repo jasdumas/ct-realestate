@@ -1,0 +1,10 @@
+"0","mon <- ggplot(real_estate, aes(x = month, fill = season)) +"
+"0","              geom_bar() +"
+"0","              scale_x_discrete() +"
+"0","              theme_bw() +"
+"0","              labs(title = ""Months for Real Estate Sales"", "
+"0","              y = """", x = """")"
+"0","ggplotly(mon)"
+"2","Warning:"
+"2"," Removed 6 rows containing non-finite values (stat_count).
+"

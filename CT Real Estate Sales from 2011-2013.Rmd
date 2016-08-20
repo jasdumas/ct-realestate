@@ -79,8 +79,8 @@ h
 
 ### Feature Engineering
 
-* Add and aggreagte counties instead of using individual towns
-* possibly aggregate towns by population size
+* Add ann aggreagte counties instead of using individual town names
+* generage seasons from Sale recorded date
 * explore other variables to enhance the original set
 
 ```{r}
@@ -144,6 +144,21 @@ windham <- c("Ashford","Brooklyn","Canterbury","Chaplin","Eastford",
 
 real_estate$county[which(real_estate$Name %in% windham)] <- "Windham"
 
+## seasons extraction
+library(lubridate)
+real_estate$month <- month(real_estate$DateRecorded)
+real_estate$season <- NA
+
+fall <- c(9, 10, 11)
+winter <- c(12, 1, 2)
+spring <- c(3, 4, 5)
+summer <- c(6, 7, 8)
+
+real_estate$season[which(real_estate$month %in% fall)] <- "Fall"
+real_estate$season[which(real_estate$month %in% winter)] <- "Winter"
+real_estate$season[which(real_estate$month %in% spring)] <- "Spring"
+real_estate$season[which(real_estate$month %in% summer)] <- "Summer"
+
 ```
 
 
@@ -153,7 +168,7 @@ It is favorable to see a moderately high correlation between the independent and
 
 ```{r}
 # Initial Linear Model 
-fit = lm(SalePrice2 ~ AssessedValue2 + county, data = real_estate)
+fit = lm(SalePrice2 ~ AssessedValue2 + county + ListYear + ResidentialType + ResidentialUnits + season, data = real_estate)
 summary(fit) # low p-values for the overall model and coeffcients
 # the model could definelty be improved with other factors not in this data-set
 ```

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "# Connecticut Real Estate Sales from 2011-2013\n\nExploring open government data and developing a model to predict **sales price** based on the assesed price and name of the town using historical records from the [data.ct.gov](data.ct.gov) open data portal.\n\n![](http://i.giphy.com/3o6Mb9dFLx0lZsqncI.gif)\n\n## About the data\n\nThe Office of Policy and Management in Connecticut maintains a listing of all real estate sales with a sales price of $2,000 or greater that occur between October 1 and September 30 of each year. For each sale record, the file includes: town, property address, date of sale, property type (residential, apartment, commercial, industrial or vacant land), sales price, and property assessment. \n\n[https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg](https://data.ct.gov/Housing-and-Development/Real-Estate-Sales-By-Town-for-2011-2012-2013/8udc-aepg)\n\n## Contact me\n\nJasmine Dumas | [@jasdumas](https://twitter.com/jasdumas)",
+    "created" : 1471107176015.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1163641468",
+    "id" : "618B8708",
+    "lastKnownWriteTime" : 1471716683,
+    "last_content_update" : 1471716683,
+    "path" : "~/Desktop/R-directory/ct-realestate/README.md",
+    "project_path" : "README.md",
+    "properties" : {
+        "chunk_rendered_width" : "650",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "markdown"
+}
